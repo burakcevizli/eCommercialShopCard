@@ -1,13 +1,23 @@
 package model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -20,6 +30,8 @@ public class Product {
 
     private String description;
 
+    @ManyToOne(cascade = CascadeType.ALL)  // Kategory Product silinse bile durucak onu belirliyoruz...
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true) // bi product silindiğinde hiç imagesi yoksa direkt silinmesini sağlıyor. orphanRemoval...
