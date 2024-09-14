@@ -23,4 +23,8 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
+
+    public Category(String name) {
+        this.name = name;
+    }
 }
