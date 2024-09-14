@@ -23,7 +23,9 @@ public class ProductService implements IProductService{
 
     @Override
     public void deleteProductById(Long id) {
-
+        productRepository.findById(id)
+                .ifPresentOrElse(productRepository::delete,
+                        () -> {throw new ProductNotFoundException("Product not found!");});
     }
 
     @Override
@@ -33,36 +35,36 @@ public class ProductService implements IProductService{
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return productRepository.findAll();
     }
 
     @Override
     public List<Product> getProductsByCategory(String category) {
-        return List.of();
+        return productRepository.findByCategoryName(category);
     }
 
     @Override
     public List<Product> getProductsByBrand(String brand) {
-        return List.of();
+        return productRepository.findByBrand(brand);
     }
 
     @Override
     public List<Product> getProductsByCategoryAndBrand(String category, String brand) {
-        return List.of();
+        return productRepository.findByCategoryNameAndBrand(category, brand);
     }
 
     @Override
     public List<Product> getProductsByName(String name) {
-        return List.of();
+        return productRepository.findByName(name);
     }
 
     @Override
     public List<Product> getProductsByBrandAndName(String brand, String name) {
-        return List.of();
+        return productRepository.findByBrandAndName(brand, name);
     }
 
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
-        return 0;
+        return productRepository.countByBrandAndName(brand, name);
     }
 }
