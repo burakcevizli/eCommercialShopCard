@@ -74,7 +74,7 @@ public class ProductService implements IProductService{
         existingProduct.setInventory(request.getInventory());
         existingProduct.setDescription(request.getDescription());
 
-        Category category = categoryRepository.findByName(request.getCategory().getName());
+        Category category = categoryRepository.findByName(request.getCategory().getName()); // If Category was found in db , then use it.
         existingProduct.setCategory(category);
         return existingProduct;
     }
