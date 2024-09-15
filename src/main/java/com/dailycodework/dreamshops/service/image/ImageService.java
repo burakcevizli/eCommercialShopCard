@@ -53,14 +53,14 @@ public class ImageService implements IImageService {
                  */
                 String buildDownloadUrl = "/api/v1/images/image/download/"; // Making a download url for saved image....
                 String downloadUrl = buildDownloadUrl + image.getId();
-                image.setDowloadUrl(downloadUrl);
+                image.setDownloadUrl(downloadUrl);
                 /*
                     After saving db , update url
                     1) First save image to db
                     2) Using the saved id in db , update url and save it again....
                  */
                 Image savedImage = imageRepository.save(image);
-                savedImage.setDowloadUrl(buildDownloadUrl + savedImage.getId());
+                savedImage.setDownloadUrl(buildDownloadUrl + savedImage.getId());
                 imageRepository.save(savedImage);
                 /*
                     For every saved image, create a new ImageDto...
@@ -68,7 +68,7 @@ public class ImageService implements IImageService {
                 ImageDto imageDto = new ImageDto();
                 imageDto.setImageId(savedImage.getId());
                 imageDto.setImageName(savedImage.getFileName());
-                imageDto.setDownloadUrl(savedImage.getDowloadUrl());
+                imageDto.setDownloadUrl(savedImage.getDownloadUrl());
                 savedImageDto.add(imageDto);
             }catch (IOException | SQLException e){
                 throw new RuntimeException(e.getMessage());
