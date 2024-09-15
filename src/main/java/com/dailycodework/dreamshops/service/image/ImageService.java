@@ -38,22 +38,33 @@ public class ImageService implements IImageService {
     public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
         Product product = productService.getProductById(productId);
         List<ImageDto> savedImageDto = new ArrayList<>();
-        for(MultipartFile file : files) {
+        for(MultipartFile file : files) { // Turning all the image files from parameterss....
             try{
-                Image image = new Image();
+                /*
+                    Image to db area...
+                 */
+                Image image = new Image(); // Making a new image file for every image ...
                 image.setFileName(file.getOriginalFilename());
                 image.setFileType(file.getContentType());
                 image.setImage(new SerialBlob(file.getBytes()));
-                image.setProduct(product);
-
-                String buildDownloadUrl = "/api/v1/images/image/download/";
+                image.setProduct(product); // Here we are connecting the image with dependent product...
+                /*
+                    Image for download area....
+                 */
+                String buildDownloadUrl = "/api/v1/images/image/download/"; // Making a download url for saved image....
                 String downloadUrl = buildDownloadUrl + image.getId();
                 image.setDowloadUrl(downloadUrl);
+                /*
+                    After saving db , update url
+                    1) First save image to db
+                    2) Using the saved id in db , update url and save it again....
+                 */
                 Image savedImage = imageRepository.save(image);
-
                 savedImage.setDowloadUrl(buildDownloadUrl + savedImage.getId());
                 imageRepository.save(savedImage);
-
+                /*
+                    For every saved image, create a new ImageDto...
+                 */
                 ImageDto imageDto = new ImageDto();
                 imageDto.setImageId(savedImage.getId());
                 imageDto.setImageName(savedImage.getFileName());
